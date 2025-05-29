@@ -17,7 +17,10 @@ bool SERVO_EASING::update() {
   }
 
   // Has the currentAngle reached the targetAngle yet?
-  if (currentAngle == targetAngle) return true;
+  if (currentAngle == targetAngle) {
+    reachedTarget(); // Call the callback function.
+    return true;
+  }
 
   return false;
 }

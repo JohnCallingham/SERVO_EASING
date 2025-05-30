@@ -20,10 +20,9 @@ class ServoEasing {
 
     /**
      * Checks to see if the currentAngle needs to be changed.
-     * Returns false if there is no need to move the servo, or it is still moving.
-     * Returns true if the currentAngle has reached the targetAngle.
+     * Calls the callback function targetReached when currentAngle == targetAngle.
      */
-    bool update();
+    void update();
 
   private:
     uint8_t currentAngle;

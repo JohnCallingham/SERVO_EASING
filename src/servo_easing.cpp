@@ -16,6 +16,8 @@ void ServoEasing::update() {
     currentAngle--; // currentAngle needs to decrease.
   }
 
+  this->servo->write(currentAngle);
+
   // Has the currentAngle reached the targetAngle yet?
   if (currentAngle == targetAngle) {
     reachedTarget(); // Call the callback function.
@@ -23,6 +25,3 @@ void ServoEasing::update() {
 
   return;
 }
-
-
-// HOW to pass back the current servo angle so that the servo can move???

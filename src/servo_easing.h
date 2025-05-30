@@ -7,7 +7,7 @@
  * Contains the servo current angle.
  * Handles the movement of the current angle towards the target angle.
  */
-class SERVO_EASING {
+class ServoEasing {
   public:
     void initialise(uint8_t initialAngle) { this->currentAngle = initialAngle; }
     void setReachedTargetCallbackFunction(void (*reachedTarget)()) { this->reachedTarget = reachedTarget; }

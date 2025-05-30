@@ -1,6 +1,6 @@
 #include "servo_easing.h"
 
-bool SERVO_EASING::update() {
+bool ServoEasing::update() {
   // Implement a non blocking delay for delaymS.
   if (millis() < nextUpdate) return false;
   nextUpdate = millis() + delaymS;

@@ -2,14 +2,15 @@
 #define SERVO_EASING_H
 
 #include <Arduino.h>
+#include <ESP32Servo.h>
 
 /**
  * Contains the servo current angle.
  * Handles the movement of the current angle towards the target angle.
  */
-class SERVO_EASING {
+class ServoEasing {
   public:
-    void initialise(uint8_t initialAngle) { this->currentAngle = initialAngle; }
+    void initialise(Servo *servo, uint8_t initialAngle) { this->currentAngle = initialAngle; this->servo = servo; }
     void setReachedTargetCallbackFunction(void (*reachedTarget)()) { this->reachedTarget = reachedTarget; }
     void setTargetAngle(uint8_t targetAngle) { this->targetAngle = targetAngle; }
 
@@ -20,10 +21,8 @@ class SERVO_EASING {
 
     /**
      * Checks to see if the currentAngle needs to be changed.
-     * Returns false if there is no need to move the servo, or it is still moving.
-     * Returns true if the currentAngle has reached the targetAngle.
      */
-    bool update();
+    void update();
 
   private:
     uint8_t currentAngle;
@@ -31,6 +30,7 @@ class SERVO_EASING {
     unsigned long delaymS = 100; // Default is 100 mS.
     unsigned long nextUpdate = 0;
     void (*reachedTarget)(); // A callback function for when the current angle reaches the target angle.
+    Servo *servo;
 
 };
 

@@ -5,7 +5,7 @@
 #include <ESP32Servo.h>
 
 /**
- * Need to indicate the direction of movement when passing the mid angle.
+ * TO DO: Need to indicate the direction of movement when passing the mid angle.
  */
 
 /**

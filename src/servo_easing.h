@@ -5,6 +5,15 @@
 #include <ESP32Servo.h>
 
 /**
+ * TO DO: Have an optional parameter midAngle which defaults to 90 degrees.
+ * Have a callback function setMidReachedCallbackFunction which is called if it exists.
+ * Need to indicate the direction of movement when passing the mid angle.
+ */
+
+
+
+
+/**
  * Contains the servo current angle.
  * Handles the movement of the current angle towards the target angle.
  */

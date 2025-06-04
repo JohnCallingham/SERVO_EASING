@@ -20,6 +20,7 @@ void ServoEasing::update() {
 
   // Has the current angle reached the mid angle yet?
   // TO DO: need to test that the code runs OK if no mid angle callback function is set.
+  // TO DO: need to indicate the direction of travel.
   if (currentAngle == midAngle) {
     if (reachedMidAngle) reachedMidAngle(); // Call the callback function if one has ben set.
   }

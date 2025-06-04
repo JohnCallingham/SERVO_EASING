@@ -18,9 +18,15 @@ void ServoEasing::update() {
 
   this->servo->write(currentAngle);
 
-  // Has the currentAngle reached the targetAngle yet?
+  // Has the current angle reached the mid angle yet?
+  // TO DO: need to test that the code runs OK if no mid angle callback function is set.
+  if (currentAngle == midAngle) {
+    if (reachedMidAngle) reachedMidAngle(); // Call the callback function if one has ben set.
+  }
+
+  // Has the current angle reached the target angle yet?
   if (currentAngle == targetAngle) {
-    reachedTarget(); // Call the callback function.
+    reachedTargetAngle(); // Call the callback function.
   }
 
   return;

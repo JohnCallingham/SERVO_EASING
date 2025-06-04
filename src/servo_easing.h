@@ -4,9 +4,7 @@
 #include <Arduino.h>
 #include <ESP32Servo.h>
 
-/**
- * TO DO: Need to indicate the direction of movement when passing the mid angle. Ditto target angle ???
- */
+enum AngleDirection { INCREASING_ANGLE, DECREASING_ANGLE };
 
 /**
  * Contains the servo current angle.
@@ -14,11 +12,11 @@
  */
 class ServoEasing {
   public:
-    void initialise(Servo *servo, uint8_t initialAngle) { this->currentAngle = initialAngle; this->servo = servo; }
+    void initialise(Servo *servo, uint8_t initialAngle) { this->servo = servo; this->currentAngle = initialAngle; }
     void setTargetAngle(uint8_t targetAngle) { this->targetAngle = targetAngle; }
     void setMidAngle(uint8_t midAngle) { this->midAngle = midAngle; }
-    void setReachedTargetAngleCallbackFunction(void (*reachedTargetAngle)(uint8_t)) { this->reachedTargetAngle = reachedTargetAngle; }
-    void setReachedMidAngleCallbackFunction(void (*reachedMidAngle)(uint8_t)) { this->reachedMidAngle = reachedMidAngle; }
+    void setReachedTargetAngleCallbackFunction(void (*reachedTargetAngle)(uint8_t, AngleDirection)) { this->reachedTargetAngle = reachedTargetAngle; }
+    void setReachedMidAngleCallbackFunction(void (*reachedMidAngle)(uint8_t, AngleDirection)) { this->reachedMidAngle = reachedMidAngle; }
 
     /**
      * delaymS is the delay between each change to the current angle.
@@ -31,15 +29,19 @@ class ServoEasing {
     void update();
 
   private:
+    AngleDirection direction;
+
     uint8_t currentAngle;
     uint8_t targetAngle;
     uint8_t midAngle = 90; // Defaults to 90 degrees.
+
     unsigned long delaymS = 100; // Default is 100 mS.
     unsigned long nextUpdate = 0;
-    void (*reachedTargetAngle)(uint8_t); // A callback function for when the current angle reaches the target angle.
-    void (*reachedMidAngle)(uint8_t); // A callback function for when the current angle reaches the mid angle.
-    Servo *servo;
 
+    void (*reachedTargetAngle)(uint8_t, AngleDirection); // A callback function for when the current angle reaches the target angle.
+    void (*reachedMidAngle)(uint8_t, AngleDirection); // A callback function for when the current angle reaches the mid angle.
+
+    Servo *servo;
 };
 
 #endif

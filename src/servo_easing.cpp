@@ -10,23 +10,24 @@ void ServoEasing::update() {
 
   if (currentAngle < targetAngle) {
     currentAngle++; // currentAngle needs to increase.
+    direction = AngleDirection::INCREASING_ANGLE;
   }
 
   if (currentAngle > targetAngle) {
     currentAngle--; // currentAngle needs to decrease.
+    direction = AngleDirection::DECREASING_ANGLE;
   }
 
   this->servo->write(currentAngle);
 
   // Has the current angle reached the mid angle yet?
-  // TO DO: need to indicate the direction of travel.
   if (currentAngle == midAngle) {
-    if (reachedMidAngle) reachedMidAngle(currentAngle); // Call the callback function if one has ben set.
+    if (reachedMidAngle) reachedMidAngle(currentAngle, direction); // Call the callback function if one has ben set.
   }
 
   // Has the current angle reached the target angle yet?
   if (currentAngle == targetAngle) {
-    if (reachedTargetAngle) reachedTargetAngle(currentAngle); // Call the callback function.
+    if (reachedTargetAngle) reachedTargetAngle(currentAngle, direction); // Call the callback function if one has ben set.
   }
 
   return;

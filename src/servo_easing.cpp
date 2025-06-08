@@ -23,12 +23,14 @@ void ServoEasing::update() {
 
   // Has the current angle reached the mid angle yet?
   if (currentAngle == midAngle) {
-    if (reachedMidAngle) reachedMidAngle(currentAngle, direction); // Call the callback function if one has ben set.
+     // Call the callback function if one has ben set.
+    if (reachedAngle) reachedAngle(servoNumber, currentAngle, direction);
   }
 
   // Has the current angle reached the target angle yet?
   if (currentAngle == targetAngle) {
-    if (reachedTargetAngle) reachedTargetAngle(currentAngle, direction); // Call the callback function if one has ben set.
+     // Call the callback function if one has ben set.
+    if (reachedAngle) reachedAngle(servoNumber, currentAngle, direction);
   }
 
   return;

@@ -12,12 +12,13 @@ enum AngleDirection { INCREASING_ANGLE, DECREASING_ANGLE };
  */
 class ServoEasing {
   public:
-    void initialise(Servo *servo) { this->servo = servo; }
+    void initialise(uint8_t servoNumber, Servo *servo) { this->servoNumber = servoNumber; this->servo = servo; }
     void setInitialAngle(uint8_t initialAngle) { this->currentAngle = initialAngle; }
     void setTargetAngle(uint8_t targetAngle) { this->targetAngle = targetAngle; }
     void setMidAngle(uint8_t midAngle) { this->midAngle = midAngle; }
-    void setReachedTargetAngleCallbackFunction(void (*reachedTargetAngle)(uint8_t, AngleDirection)) { this->reachedTargetAngle = reachedTargetAngle; }
-    void setReachedMidAngleCallbackFunction(void (*reachedMidAngle)(uint8_t, AngleDirection)) { this->reachedMidAngle = reachedMidAngle; }
+    // void setReachedTargetAngleCallbackFunction(void (*reachedTargetAngle)(uint8_t, uint8_t, AngleDirection)) { this->reachedTargetAngle = reachedTargetAngle; }
+    // void setReachedMidAngleCallbackFunction(void (*reachedMidAngle)(uint8_t, uint8_t, AngleDirection)) { this->reachedMidAngle = reachedMidAngle; }
+    void setReachedAngleCallbackFunction(void (*reachedAngle)(uint8_t servoNumber, uint8_t currentAngle, AngleDirection direction)) { this->reachedAngle = reachedAngle; }
 
     uint8_t getCurrentAngle() { return this->currentAngle; }
 
@@ -33,6 +34,7 @@ class ServoEasing {
 
   private:
     AngleDirection direction;
+    uint8_t servoNumber;
 
     uint8_t currentAngle;
     uint8_t targetAngle;
@@ -41,8 +43,8 @@ class ServoEasing {
     unsigned long delaymS = 100; // Default is 100 mS.
     unsigned long nextUpdate = 0;
 
-    void (*reachedTargetAngle)(uint8_t, AngleDirection); // A callback function for when the current angle reaches the target angle.
-    void (*reachedMidAngle)(uint8_t, AngleDirection); // A callback function for when the current angle reaches the mid angle.
+    // A callback function for when the current angle reaches the mid or target angles.
+    void (*reachedAngle)(uint8_t servoNumber , uint8_t currentAngle, AngleDirection direction);
 
     Servo *servo;
 };

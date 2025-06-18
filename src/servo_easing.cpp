@@ -19,7 +19,7 @@ void ServoEasing::update() {
   }
 
   this->servo->write(currentAngle);
-  Serial.printf("\ncurrent angle = %d", currentAngle);
+  Serial.printf("\nservo %d current angle = %d", servoNumber, currentAngle);
 
   // Has the current angle reached the mid angle yet?
   if (currentAngle == midAngle) {

@@ -13,11 +13,11 @@ enum AngleDirection { INCREASING_ANGLE, DECREASING_ANGLE };
 class ServoEasing {
   public:
     void initialise(uint8_t servoNumber, Servo *servo) { this->servoNumber = servoNumber; this->servo = servo; }
+
     void setInitialAngle(uint8_t initialAngle) { this->currentAngle = initialAngle; }
     void setTargetAngle(uint8_t targetAngle) { this->targetAngle = targetAngle; }
     void setMidAngle(uint8_t midAngle) { this->midAngle = midAngle; }
-    // void setReachedTargetAngleCallbackFunction(void (*reachedTargetAngle)(uint8_t, uint8_t, AngleDirection)) { this->reachedTargetAngle = reachedTargetAngle; }
-    // void setReachedMidAngleCallbackFunction(void (*reachedMidAngle)(uint8_t, uint8_t, AngleDirection)) { this->reachedMidAngle = reachedMidAngle; }
+
     void setReachedAngleCallbackFunction(void (*reachedAngle)(uint8_t servoNumber, uint8_t currentAngle, AngleDirection direction)) { this->reachedAngle = reachedAngle; }
 
     uint8_t getCurrentAngle() { return this->currentAngle; }

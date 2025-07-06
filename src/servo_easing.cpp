@@ -1,5 +1,13 @@
 #include "servo_easing.h"
 
+void ServoEasing::setTargetAngle(uint8_t targetAngle) {
+  this->targetAngle = targetAngle;
+
+  // // Start the servo's PWM pulses.
+  // // No PWM pulses until servo is (re)attached !!!
+  // servo->attach(this->servoPin);
+}
+
 void ServoEasing::update() {
   // Implement a non blocking delay for delaymS.
   if (millis() < nextUpdate) return;
@@ -41,7 +49,8 @@ void ServoEasing::update() {
 
   // Has the current angle reached the target angle yet?
   if (currentAngle == targetAngle) {
-     // Call the callback function if one has ben set.
+    //servo->detach(); // Stop any more PWM pulses. // Stops PWM completely !!!
+    // Call the callback function if one has been set.
     if (reachedAngle) reachedAngle(servoNumber, currentAngle, direction);
   }
 

@@ -3,9 +3,9 @@
 void ServoEasing::setTargetAngle(uint8_t targetAngle) {
   this->targetAngle = targetAngle;
 
-  // // Start the servo's PWM pulses.
-  // // No PWM pulses until servo is (re)attached !!!
-  // servo->attach(this->servoPin);
+  // Start the servo's PWM pulses.
+  // No PWM pulses until servo is (re)attached !!!
+  servo.attach(this->servoPin);
 }
 
 void ServoEasing::update() {
@@ -30,7 +30,8 @@ void ServoEasing::update() {
     direction = AngleDirection::DECREASING_ANGLE;
   }
 
-  this->servo->write(currentAngle);
+  // this->servo->write(currentAngle);
+  this->servo.write(currentAngle);
   Serial.printf("\n%6ld servo %d current angle = %d", millis(), servoNumber, currentAngle);
 
   // If the current angle is nearing the target angle then increase the delay between updates.

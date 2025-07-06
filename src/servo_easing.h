@@ -12,10 +12,18 @@ enum AngleDirection { INCREASING_ANGLE, DECREASING_ANGLE };
  */
 class ServoEasing {
   public:
-    void initialise(uint8_t servoNumber, Servo *servo, uint8_t servoPin) {
+    // void initialise(uint8_t servoNumber, Servo *servo, uint8_t servoPin) {
+    //   this->servoNumber = servoNumber;
+    //   this->servo = servo;
+    //   this->servoPin = servoPin;
+    // }
+
+    void initialise(uint8_t servoNumber, uint8_t servoPin) {
       this->servoNumber = servoNumber;
-      this->servo = servo;
       this->servoPin = servoPin;
+
+      int retVal = servo.attach(this->servoPin);
+      Serial.printf("\nretVal = %d", retVal);
     }
 
     void setInitialAngle(uint8_t initialAngle) { this->currentAngle = initialAngle; }
@@ -53,7 +61,8 @@ class ServoEasing {
     // A callback function for when the current angle reaches the mid or target angles.
     void (*reachedAngle)(uint8_t servoNumber , uint8_t currentAngle, AngleDirection direction);
 
-    Servo *servo;
+    // Servo *servo;
+    Servo servo; // Moved from Servo_LCC.
     uint8_t servoPin;
 };
 

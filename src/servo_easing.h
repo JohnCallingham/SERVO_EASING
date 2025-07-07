@@ -18,15 +18,18 @@ class ServoEasing {
     //   this->servoPin = servoPin;
     // }
 
-    void initialise(uint8_t servoNumber, uint8_t servoPin) {
-      this->servoNumber = servoNumber;
-      this->servoPin = servoPin;
+    // void initialise(uint8_t servoNumber, uint8_t servoPin) {
+    //   this->servoNumber = servoNumber;
+    //   this->servoPin = servoPin;
 
-      int retVal = servo.attach(this->servoPin);
-      Serial.printf("\nretVal = %d", retVal);
-    }
+    //   // int retVal = servo.attach(this->servoPin);
+    //   // Serial.printf("\nretVal = %d", retVal);
+    // }
 
-    void setInitialAngle(uint8_t initialAngle) { this->currentAngle = initialAngle; }
+    void initialise(uint8_t servoNumber, uint8_t servoPin);
+
+    // void setInitialAngle(uint8_t initialAngle) { this->currentAngle = initialAngle; }
+    void setInitialAngle(uint8_t initialAngle);
     // void setTargetAngle(uint8_t targetAngle) { this->targetAngle = targetAngle; }
     void setTargetAngle(uint8_t targetAngle);
     void setMidAngle(uint8_t midAngle) { this->midAngle = midAngle; }
@@ -62,7 +65,7 @@ class ServoEasing {
     void (*reachedAngle)(uint8_t servoNumber , uint8_t currentAngle, AngleDirection direction);
 
     // Servo *servo;
-    Servo servo; // Moved from Servo_LCC.
+    //Servo servo; // Moved from Servo_LCC.
     uint8_t servoPin;
 };
 

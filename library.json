@@ -2,8 +2,3 @@
 "name": "SERVO_EASING",
 "version": "0.1.1"
 }
-;"dependencies":
-;  {
-;    "SERVO": "https://github.com/madhephaestus/ESP32Servo.git"
-;  }
-;}

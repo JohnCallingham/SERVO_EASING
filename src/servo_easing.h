@@ -2,7 +2,22 @@
 #define SERVO_EASING_H
 
 #include <Arduino.h>
-#include <ESP32Servo.h>
+
+#define PWM_FREQ               50 // 50 Hz.
+#define MICRO_SECONDS_PER_CYCLE 20000 // 20,000 microSeconds in a cycle of frequency 50 Hz.
+#define PWM_RESOLUTION         12  // Needs a minimum of 10 bit resolution, 8 bit doesn't work down to 50Hz !!
+
+#define MIN_ANGLE               0
+#define MAX_ANGLE             180
+#define DEFAULT_ANGLE          90
+
+#define MIN_PULSE_WIDTH       544 // The number of microSeconds for MIN_ANGLE.
+#define MAX_PULSE_WIDTH      2400 // The number of microSeconds for MAX_ANGLE.
+#define DEFAULT_PULSE_WIDTH  1500 // The number of microSeconds for DEFAULT_ANGLE.
+
+#define TICKS_PER_CYCLE      4096 // As PWM_RESOLUTION is 12 bits.
+#define MIN_TICKS            (MIN_PULSE_WIDTH * TICKS_PER_CYCLE) / MICRO_SECONDS_PER_CYCLE
+#define MAX_TICKS            (MAX_PULSE_WIDTH * TICKS_PER_CYCLE) / MICRO_SECONDS_PER_CYCLE
 
 enum AngleDirection { INCREASING_ANGLE, DECREASING_ANGLE };
 
@@ -12,31 +27,12 @@ enum AngleDirection { INCREASING_ANGLE, DECREASING_ANGLE };
  */
 class ServoEasing {
   public:
-    // void initialise(uint8_t servoNumber, Servo *servo, uint8_t servoPin) {
-    //   this->servoNumber = servoNumber;
-    //   this->servo = servo;
-    //   this->servoPin = servoPin;
-    // }
-
-    // void initialise(uint8_t servoNumber, uint8_t servoPin) {
-    //   this->servoNumber = servoNumber;
-    //   this->servoPin = servoPin;
-
-    //   // int retVal = servo.attach(this->servoPin);
-    //   // Serial.printf("\nretVal = %d", retVal);
-    // }
-
     void initialise(uint8_t servoNumber, uint8_t servoPin);
-
-    // void setInitialAngle(uint8_t initialAngle) { this->currentAngle = initialAngle; }
     void setInitialAngle(uint8_t initialAngle);
-    // void setTargetAngle(uint8_t targetAngle) { this->targetAngle = targetAngle; }
     void setTargetAngle(uint8_t targetAngle);
     void setMidAngle(uint8_t midAngle) { this->midAngle = midAngle; }
 
     void setReachedAngleCallbackFunction(void (*reachedAngle)(uint8_t servoNumber, uint8_t currentAngle, AngleDirection direction)) { this->reachedAngle = reachedAngle; }
-
-    //void setServoPin(uint8_t servoPin) { this->servoPin = servoPin; }
 
     uint8_t getCurrentAngle() { return this->currentAngle; }
 
@@ -62,10 +58,11 @@ class ServoEasing {
     unsigned long nextUpdate = 0;
 
     // A callback function for when the current angle reaches the mid or target angles.
-    void (*reachedAngle)(uint8_t servoNumber , uint8_t currentAngle, AngleDirection direction);
+    void (*reachedAngle)(uint8_t servoNumber, uint8_t currentAngle, AngleDirection direction);
 
-    // Servo *servo;
-    //Servo servo; // Moved from Servo_LCC.
+    // Calculates the duty cycle for the current angle and updates the PWM.
+    void updatePWM(uint8_t servoNumber, uint8_t currentAngle);
+
     uint8_t servoPin;
 };
 

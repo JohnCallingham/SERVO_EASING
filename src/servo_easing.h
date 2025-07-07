@@ -5,7 +5,8 @@
 
 #define PWM_FREQ               50 // 50 Hz.
 #define MICRO_SECONDS_PER_CYCLE 20000 // 20,000 microSeconds in a cycle of frequency 50 Hz.
-#define PWM_RESOLUTION         12  // Needs a minimum of 10 bit resolution, 8 bit doesn't work down to 50Hz !!
+// #define PWM_RESOLUTION         12  // Needs a minimum of 10 bit resolution, 8 bit doesn't work down to 50Hz !!
+#define PWM_RESOLUTION         13  // Needs a minimum of 10 bit resolution, 8 bit doesn't work down to 50Hz !!
 
 #define MIN_ANGLE               0
 #define MAX_ANGLE             180
@@ -15,7 +16,8 @@
 #define MAX_PULSE_WIDTH      2400 // The number of microSeconds for MAX_ANGLE.
 #define DEFAULT_PULSE_WIDTH  1500 // The number of microSeconds for DEFAULT_ANGLE.
 
-#define TICKS_PER_CYCLE      4096 // As PWM_RESOLUTION is 12 bits.
+// #define TICKS_PER_CYCLE      4096 // As PWM_RESOLUTION is 12 bits.
+#define TICKS_PER_CYCLE      8192 // As PWM_RESOLUTION is 13 bits.
 #define MIN_TICKS            (MIN_PULSE_WIDTH * TICKS_PER_CYCLE) / MICRO_SECONDS_PER_CYCLE
 #define MAX_TICKS            (MAX_PULSE_WIDTH * TICKS_PER_CYCLE) / MICRO_SECONDS_PER_CYCLE
 
@@ -63,7 +65,7 @@ class ServoEasing {
     // Calculates the duty cycle for the current angle and updates the PWM.
     void updatePWM(uint8_t servoNumber, uint8_t currentAngle);
 
-    uint8_t servoPin;
+    // uint8_t servoPin;
 };
 
 #endif

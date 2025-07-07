@@ -2,14 +2,14 @@
 
 void ServoEasing::initialise(uint8_t servoNumber, uint8_t servoPin) {
   this->servoNumber = servoNumber;
-  this->servoPin = servoPin;
+  // this->servoPin = servoPin;
 
   /**
-   * Initialsie the PWM pulses.
+   * Initialise the PWM pulses.
    * Uses servoNumber for the PWM channel.
    */
   ledcSetup(this->servoNumber, PWM_FREQ, PWM_RESOLUTION);
-  ledcAttachPin(this->servoPin, this->servoNumber);
+  ledcAttachPin(servoPin, this->servoNumber);
 
   // Start with no PWM pulses.
   ledcWrite(this->servoNumber, 0);
@@ -31,15 +31,22 @@ void ServoEasing::setTargetAngle(uint8_t targetAngle) {
 }
 
 void ServoEasing::update() {
-  // Implement a non blocking delay for delaymS.
+  uint8_t differenceAngle;
+
+  /**
+   * Implement a non blocking delay for delaymS.
+   */
   if (millis() < nextUpdate) return;
   nextUpdate = millis() + delaymS;
 
-  uint8_t differenceAngle;
-
-  // The delay has expired so it's time to check if any movement is required.
+  /**
+   * The delay has expired so it's time to check if any movement is required.
+   */
   if (currentAngle == targetAngle) return;
 
+  /**
+   * Movement is required so check which direction.
+   */
   if (currentAngle < targetAngle) {
     differenceAngle = targetAngle - currentAngle;
     currentAngle++; // currentAngle needs to increase.
@@ -56,7 +63,9 @@ void ServoEasing::update() {
   updatePWM(this->servoNumber, currentAngle);
   Serial.printf("\n%6ld servo %d current angle = %d", millis(), servoNumber, currentAngle);
 
-  // If the current angle is nearing the target angle then increase the delay between updates.
+  /**
+   * As the current angle approaches the target angle increase the delay between updates.
+   */
   if (differenceAngle < 10) {
     nextUpdate += delaymS;
   }
@@ -83,14 +92,10 @@ void ServoEasing::update() {
 }
 
 void ServoEasing::updatePWM(uint8_t servoNumber, uint8_t servoAngle) {
-
-  // // Convert currentAngle to microSeconds.
-  // uint16_t microSeconds = map(currentAngle, 0, 180, MIN_PULSE_WIDTH,  MAX_PULSE_WIDTH);
-  // Serial.printf("\nmicroSeconds = %d", microSeconds);
-
   // Convert servoAngle to duty cycle.
   uint16_t dutyCycle = map(servoAngle, MIN_ANGLE, MAX_ANGLE, MIN_TICKS, MAX_TICKS);
   Serial.printf("\ndutyCycle = %d", dutyCycle);
 
+  // Write the new duty cycle to the PWM controller.
   ledcWrite(this->servoNumber, dutyCycle);
 }

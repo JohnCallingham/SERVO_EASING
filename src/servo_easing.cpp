@@ -2,7 +2,6 @@
 
 void ServoEasing::initialise(uint8_t servoNumber, uint8_t servoPin) {
   this->servoNumber = servoNumber;
-  // this->servoPin = servoPin;
 
   /**
    * Initialise the PWM pulses.
@@ -19,15 +18,11 @@ void ServoEasing::setInitialAngle(uint8_t initialAngle) {
   this->currentAngle = initialAngle;
   
   // Move the servo to its initial angle.
-  updatePWM(this->servoNumber, initialAngle);
+  updatePWM(initialAngle);
   delay(1000); // Allow some time for servo to move. How much??
 
   // Stop the PWM pulses.
   ledcWrite(this->servoNumber, 0);
-}
-
-void ServoEasing::setTargetAngle(uint8_t targetAngle) {
-  this->targetAngle = targetAngle;
 }
 
 void ServoEasing::update() {
@@ -60,7 +55,7 @@ void ServoEasing::update() {
   }
 
   // Update the PWM duty cycle.
-  updatePWM(this->servoNumber, currentAngle);
+  updatePWM(currentAngle);
   Serial.printf("\n%6ld servo %d current angle = %d", millis(), servoNumber, currentAngle);
 
   /**
@@ -91,7 +86,7 @@ void ServoEasing::update() {
   return;
 }
 
-void ServoEasing::updatePWM(uint8_t servoNumber, uint8_t servoAngle) {
+void ServoEasing::updatePWM(uint8_t servoAngle) {
   // Convert servoAngle to duty cycle.
   uint16_t dutyCycle = map(servoAngle, MIN_ANGLE, MAX_ANGLE, MIN_TICKS, MAX_TICKS);
   Serial.printf("\ndutyCycle = %d", dutyCycle);

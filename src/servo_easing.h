@@ -69,7 +69,7 @@ class ServoEasing {
     uint8_t targetAngle;
     uint8_t midAngle = 90; // Defaults to 90 degrees.
 
-    unsigned long delaymS = 100; // Default is 100 mS.
+    unsigned long delaymS; // Default is 100 mS. no default as now user configuratble.
     unsigned long nextUpdate = 0;
 
     // A callback function for when the current angle reaches the mid or target angles.

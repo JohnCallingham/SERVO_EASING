@@ -39,6 +39,8 @@ void ServoEasing::update() {
    */
   if (currentAngle == targetAngle) return;
 
+  Serial.printf("\ndelaymS = %d", this->delaymS);
+
   /**
    * Movement is required so check which direction.
    */

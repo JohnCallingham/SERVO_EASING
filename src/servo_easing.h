@@ -20,7 +20,8 @@
 
 #define PWM_FREQ               50 // 50 Hz.
 #define MICRO_SECONDS_PER_CYCLE 20000 // 20,000 microSeconds in a cycle of frequency 50 Hz.
-#define PWM_RESOLUTION         13  // Needs a minimum of 10 bit resolution, 8 bit doesn't work down to 50Hz !!
+// #define PWM_RESOLUTION         13  // Needs a minimum of 10 bit resolution, 8 bit doesn't work down to 50Hz !!
+#define PWM_RESOLUTION         14  // Needs a minimum of 10 bit resolution, 8 bit doesn't work down to 50Hz !!
 
 #define MIN_ANGLE               0
 #define MAX_ANGLE             180
@@ -30,9 +31,16 @@
 #define MAX_PULSE_WIDTH      2400 // The number of microSeconds for MAX_ANGLE.
 #define DEFAULT_PULSE_WIDTH  1500 // The number of microSeconds for DEFAULT_ANGLE.
 
-#define TICKS_PER_CYCLE      8192 // As PWM_RESOLUTION is 13 bits.
-#define MIN_TICKS            (MIN_PULSE_WIDTH * TICKS_PER_CYCLE) / MICRO_SECONDS_PER_CYCLE
-#define MAX_TICKS            (MAX_PULSE_WIDTH * TICKS_PER_CYCLE) / MICRO_SECONDS_PER_CYCLE
+// #define TICKS_PER_CYCLE      8192 // As PWM_RESOLUTION is 13 bits.
+#define TICKS_PER_CYCLE      (32768/2) // As PWM_RESOLUTION is 14 bits.
+// #define MIN_TICKS            (MIN_PULSE_WIDTH * TICKS_PER_CYCLE) / MICRO_SECONDS_PER_CYCLE
+// #define MAX_TICKS            (MAX_PULSE_WIDTH * TICKS_PER_CYCLE) / MICRO_SECONDS_PER_CYCLE
+
+const long MIN_TICKS = (MIN_PULSE_WIDTH * TICKS_PER_CYCLE) / MICRO_SECONDS_PER_CYCLE;
+const long MAX_TICKS = (MAX_PULSE_WIDTH * TICKS_PER_CYCLE) / MICRO_SECONDS_PER_CYCLE;
+
+// const long cMIN_TICKS = MIN_TICKS;
+// const long cMAX_TICKS = MAX_TICKS;
 
 enum AngleDirection { INCREASING_ANGLE, DECREASING_ANGLE };
 
@@ -44,7 +52,7 @@ class ServoEasing {
   public:
     void initialise(uint8_t servoNumber, uint8_t servoPin);
     void setInitialAngle(uint8_t initialAngle);
-    void setTargetAngle(uint8_t targetAngle) { this->targetAngle = targetAngle; }
+    void setTargetAngle(uint8_t targetAngle);
     void setMidAngle(uint8_t midAngle) { this->midAngle = midAngle; }
 
     void setReachedAngleCallbackFunction(void (*reachedAngle)(uint8_t servoNumber, uint8_t currentAngle, AngleDirection direction)) { this->reachedAngle = reachedAngle; }
@@ -77,6 +85,30 @@ class ServoEasing {
 
     // Calculates the duty cycle for the current angle and updates the PWM.
     void updatePWM(uint8_t currentAngle);
+
+    /**
+     * Servo easing variables and functions.
+     */
+
+    // Stores the start and finish angles and ticks for the current movement.
+    uint8_t movementStartAngle;
+    uint8_t movementFinishAngle;
+    uint16_t movementStartTick;
+    uint16_t movementFinishTick;
+
+    // // // Updates movementStartTick and movementFinishTick.
+    // // void calculateMovementTicks();
+
+    // // Converts a number of ticks to a per cent of total movement (0 - 1).
+    // float convertTicksToPerCentOfMovement(uint16_t ticks);
+
+    // // Converts a per cent of total movement (0 - 1)
+    // // to the eased value (0 - 1).
+    // float easingFunction(float perCentOfTotalMovement);
+
+    // // Converts a per cent of total movement (0 - 1) to a number of ticks.
+    // uint16_t convertPerCentOfMovementToTicks(float easedPerCentOfTotalMovement);
+
 };
 
 #endif

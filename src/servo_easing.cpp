@@ -19,15 +19,32 @@ void ServoEasing::setInitialAngle(uint8_t initialAngle) {
   
   // Move the servo to its initial angle.
   updatePWM(initialAngle);
-  delay(1000); // Allow some time for servo to move. How much??
+  // // Bypass updatePWM() in case servo easing is being used.
+  // // Convert servoAngle to duty cycle (ticks).
+  // uint16_t dutyCycle = map(initialAngle, MIN_ANGLE, MAX_ANGLE, MIN_TICKS, MAX_TICKS);
+  // //Serial.printf("\ndutyCycle = %d", dutyCycle);
+
+  // // Write the new duty cycle to the PWM controller.
+  // ledcWrite(this->servoNumber, dutyCycle);
+
+  // Allow some time for servo to move. How much??
+  delay(1000);
 
   // Stop the PWM pulses.
   ledcWrite(this->servoNumber, 0);
 }
 
-void ServoEasing::update() {
-  uint8_t differenceAngle;
+void ServoEasing::setTargetAngle(uint8_t targetAngle) {
+  this->targetAngle = targetAngle;
 
+  // Update the start and finish angles and ticks for this movement.
+  movementStartAngle = currentAngle;
+  movementFinishAngle = targetAngle;
+  movementStartTick = map(currentAngle, MIN_ANGLE, MAX_ANGLE, MIN_TICKS, MAX_TICKS);
+  movementFinishTick = map(targetAngle, MIN_ANGLE, MAX_ANGLE, MIN_TICKS, MAX_TICKS);
+}
+
+void ServoEasing::update() {
   /**
    * Implement a non blocking delay for delaymS.
    */
@@ -39,19 +56,17 @@ void ServoEasing::update() {
    */
   if (currentAngle == targetAngle) return;
 
-  Serial.printf("\ndelaymS = %d", this->delaymS);
+  //Serial.printf("\ndelaymS = %d", this->delaymS);
 
   /**
    * Movement is required so check which direction.
    */
   if (currentAngle < targetAngle) {
-    differenceAngle = targetAngle - currentAngle;
     currentAngle++; // currentAngle needs to increase.
     direction = AngleDirection::INCREASING_ANGLE;
   }
 
   if (currentAngle > targetAngle) {
-    differenceAngle = currentAngle - targetAngle;
     currentAngle--; // currentAngle needs to decrease.
     direction = AngleDirection::DECREASING_ANGLE;
   }
@@ -61,18 +76,19 @@ void ServoEasing::update() {
   Serial.printf("\n%6ld servo %d current angle = %d", millis(), servoNumber, currentAngle);
 
   /**
-   * As the current angle approaches the target angle increase the delay between updates.
+   * A crude form of servo easing.
+   * Calculates the current percentage of the movement.
+   * Varies the delay at the start and end of the movement.
    */
-  if (differenceAngle < 10) {
-    nextUpdate += delaymS;
-  }
-  if (differenceAngle < 5) {
-    nextUpdate += delaymS;
-  }
+  uint16_t perCent = map(currentAngle, movementStartAngle, movementFinishAngle, 1, 100 );
+  if (perCent < 10) nextUpdate += (3 * delaymS);
+  if (perCent < 20) nextUpdate += (2 * delaymS);
+  if (perCent > 80) nextUpdate += (2 * delaymS);
+  if (perCent > 90) nextUpdate += (3 * delaymS);
 
   // Has the current angle reached the mid angle yet?
   if (currentAngle == midAngle) {
-     // Call the callback function if one has ben set.
+     // Call the callback function if one has been set.
     if (reachedAngle) reachedAngle(servoNumber, currentAngle, direction);
   }
 
@@ -89,7 +105,7 @@ void ServoEasing::update() {
 }
 
 void ServoEasing::updatePWM(uint8_t servoAngle) {
-  // Convert servoAngle to duty cycle.
+  // Convert servoAngle to duty cycle (ticks).
   uint16_t dutyCycle = map(servoAngle, MIN_ANGLE, MAX_ANGLE, MIN_TICKS, MAX_TICKS);
   Serial.printf("\ndutyCycle = %d", dutyCycle);
 

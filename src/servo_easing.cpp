@@ -40,8 +40,8 @@ void ServoEasing::setTargetAngle(uint8_t targetAngle) {
   // Update the start and finish angles and ticks for this movement.
   movementStartAngle = currentAngle;
   movementFinishAngle = targetAngle;
-  movementStartTick = map(currentAngle, MIN_ANGLE, MAX_ANGLE, MIN_TICKS, MAX_TICKS);
-  movementFinishTick = map(targetAngle, MIN_ANGLE, MAX_ANGLE, MIN_TICKS, MAX_TICKS);
+  // movementStartTick = map(currentAngle, MIN_ANGLE, MAX_ANGLE, MIN_TICKS, MAX_TICKS);
+  // movementFinishTick = map(targetAngle, MIN_ANGLE, MAX_ANGLE, MIN_TICKS, MAX_TICKS);
 }
 
 void ServoEasing::update() {
@@ -55,8 +55,6 @@ void ServoEasing::update() {
    * The delay has expired so it's time to check if any movement is required.
    */
   if (currentAngle == targetAngle) return;
-
-  //Serial.printf("\ndelaymS = %d", this->delaymS);
 
   /**
    * Movement is required so check which direction.

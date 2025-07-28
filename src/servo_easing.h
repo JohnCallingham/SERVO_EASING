@@ -86,29 +86,12 @@ class ServoEasing {
     // Calculates the duty cycle for the current angle and updates the PWM.
     void updatePWM(uint8_t currentAngle);
 
-    /**
-     * Servo easing variables and functions.
-     */
-
-    // Stores the start and finish angles and ticks for the current movement.
+    // // Stores the start and finish angles and ticks for the current movement.
+    // Stores the start and finish angles for the current movement.
     uint8_t movementStartAngle;
     uint8_t movementFinishAngle;
-    uint16_t movementStartTick;
-    uint16_t movementFinishTick;
-
-    // // // Updates movementStartTick and movementFinishTick.
-    // // void calculateMovementTicks();
-
-    // // Converts a number of ticks to a per cent of total movement (0 - 1).
-    // float convertTicksToPerCentOfMovement(uint16_t ticks);
-
-    // // Converts a per cent of total movement (0 - 1)
-    // // to the eased value (0 - 1).
-    // float easingFunction(float perCentOfTotalMovement);
-
-    // // Converts a per cent of total movement (0 - 1) to a number of ticks.
-    // uint16_t convertPerCentOfMovementToTicks(float easedPerCentOfTotalMovement);
-
+    // uint16_t movementStartTick;
+    // uint16_t movementFinishTick;
 };
 
 #endif

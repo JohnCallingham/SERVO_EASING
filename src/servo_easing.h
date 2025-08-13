@@ -31,16 +31,11 @@
 #define MAX_PULSE_WIDTH      2400 // The number of microSeconds for MAX_ANGLE.
 #define DEFAULT_PULSE_WIDTH  1500 // The number of microSeconds for DEFAULT_ANGLE.
 
-// #define TICKS_PER_CYCLE      8192 // As PWM_RESOLUTION is 13 bits.
-#define TICKS_PER_CYCLE      (32768/2) // As PWM_RESOLUTION is 14 bits.
-// #define MIN_TICKS            (MIN_PULSE_WIDTH * TICKS_PER_CYCLE) / MICRO_SECONDS_PER_CYCLE
-// #define MAX_TICKS            (MAX_PULSE_WIDTH * TICKS_PER_CYCLE) / MICRO_SECONDS_PER_CYCLE
+// #define TICKS_PER_CYCLE      8192 // For a PWM_RESOLUTION of 13 bits.
+#define TICKS_PER_CYCLE      (32768/2) // For a PWM_RESOLUTION of 14 bits.
 
 const long MIN_TICKS = (MIN_PULSE_WIDTH * TICKS_PER_CYCLE) / MICRO_SECONDS_PER_CYCLE;
 const long MAX_TICKS = (MAX_PULSE_WIDTH * TICKS_PER_CYCLE) / MICRO_SECONDS_PER_CYCLE;
-
-// const long cMIN_TICKS = MIN_TICKS;
-// const long cMAX_TICKS = MAX_TICKS;
 
 enum AngleDirection { INCREASING_ANGLE, DECREASING_ANGLE };
 

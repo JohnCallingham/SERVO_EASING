@@ -17,15 +17,8 @@ void ServoEasing::initialise(uint8_t servoNumber, uint8_t servoPin) {
 void ServoEasing::setInitialAngle(uint8_t initialAngle) {
   this->currentAngle = initialAngle;
   
-  // Move the servo to its initial angle.
+  // Move the servo to its initial angle. There is no easing.
   updatePWM(initialAngle);
-  // // Bypass updatePWM() in case servo easing is being used.
-  // // Convert servoAngle to duty cycle (ticks).
-  // uint16_t dutyCycle = map(initialAngle, MIN_ANGLE, MAX_ANGLE, MIN_TICKS, MAX_TICKS);
-  // //Serial.printf("\ndutyCycle = %d", dutyCycle);
-
-  // // Write the new duty cycle to the PWM controller.
-  // ledcWrite(this->servoNumber, dutyCycle);
 
   // Allow some time for servo to move. How much??
   delay(1000);
@@ -40,8 +33,6 @@ void ServoEasing::setTargetAngle(uint8_t targetAngle) {
   // Update the start and finish angles and ticks for this movement.
   movementStartAngle = currentAngle;
   movementFinishAngle = targetAngle;
-  // movementStartTick = map(currentAngle, MIN_ANGLE, MAX_ANGLE, MIN_TICKS, MAX_TICKS);
-  // movementFinishTick = map(targetAngle, MIN_ANGLE, MAX_ANGLE, MIN_TICKS, MAX_TICKS);
 }
 
 void ServoEasing::update() {

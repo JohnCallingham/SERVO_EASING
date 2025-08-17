@@ -6,6 +6,6 @@ Movement of the servo is achieved by setting the target angle to be different to
 
 The update() function will need to be called from the main program loop to update the servo angle.
 
-A crude form of servo easing is achieved by increasing the delay between updates at the start and end of each servo movemnt.
+A crude form of servo easing is achieved by increasing the delay between updates at the start and end of each servo movement.
 
 This library has been developed using PlatformIO.

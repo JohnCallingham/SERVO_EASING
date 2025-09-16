@@ -57,7 +57,8 @@ class ServoEasing {
     /**
      * Called repeadedly and checks to see if the current angle needs to be changed.
      */
-    void update();
+    // void update();
+    void loop();
 
   private:
     enum EasingAction { EASE_NONE, EASE_IN, EASE_OUT, EASE_IN_OUT };

@@ -36,7 +36,8 @@ void ServoEasing::setTargetAngle(uint8_t targetAngle) {
   movementFinishAngle = targetAngle;
 }
 
-void ServoEasing::update() {
+// void ServoEasing::update() {
+void ServoEasing::loop() {
   /**
    * Implement a non blocking delay for delaymS.
    */

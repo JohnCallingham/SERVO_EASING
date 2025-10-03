@@ -57,7 +57,6 @@ class ServoEasing {
     /**
      * Called repeadedly and checks to see if the current angle needs to be changed.
      */
-    // void update();
     void loop();
 
   private:
